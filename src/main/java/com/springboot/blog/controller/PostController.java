@@ -55,7 +55,10 @@ public class PostController {
     }
 
     @DeleteMapping("/{id}")
-    public void deletePost(@PathVariable(name = "id") long id) {
-        postService.deletePost(id);
+    public ResponseEntity<String> deletePost(@PathVariable(name = "id") long id) {
+        var result = postService.deletePost(id);
+
+        return result ? new ResponseEntity<>("Post deleted successfully", HttpStatus.OK) :
+                new ResponseEntity<>("Post not found", HttpStatus.NOT_FOUND);
     }
 }
