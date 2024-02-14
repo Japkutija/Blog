@@ -6,8 +6,6 @@ import com.springboot.blog.payload.PostDto;
 import com.springboot.blog.payload.PostResponse;
 import com.springboot.blog.repository.PostRepository;
 import com.springboot.blog.service.PostService;
-import java.util.List;
-import java.util.Optional;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -82,10 +80,12 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public void deletePost(long id) {
+    public boolean deletePost(long id) {
         var post = getPostById(id);
 
         postRepository.delete(mapToEntity(post));
+    
+        return true;
     }
 
     private PostDto mapToDTO(Post post) {
