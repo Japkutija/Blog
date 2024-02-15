@@ -8,6 +8,7 @@ import com.springboot.blog.payload.PostResponse;
 import com.springboot.blog.repository.CategoryRepository;
 import com.springboot.blog.repository.PostRepository;
 import com.springboot.blog.service.PostService;
+import java.util.List;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -98,6 +99,16 @@ public class PostServiceImpl implements PostService {
         postRepository.delete(mapToEntity(post));
 
         return true;
+    }
+
+    @Override
+    public List<PostDto> getPostsByCategory(Long categoryId) {
+        Category category = categoryRepository.findById(categoryId)
+                .orElseThrow(() -> new ResourceNotFoundException("Category", "id", categoryId));
+
+        List<Post> posts = category.getPosts();
+
+        return posts.stream().map(this::mapToDTO).collect(Collectors.toList());
     }
 
     private PostDto mapToDTO(Post post) {
