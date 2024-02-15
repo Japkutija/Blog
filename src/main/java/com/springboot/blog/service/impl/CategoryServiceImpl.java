@@ -5,6 +5,7 @@ import com.springboot.blog.exception.ResourceNotFoundException;
 import com.springboot.blog.payload.CategoryDto;
 import com.springboot.blog.repository.CategoryRepository;
 import com.springboot.blog.service.CategoryService;
+import jakarta.transaction.Transactional;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -51,5 +52,11 @@ public class CategoryServiceImpl implements CategoryService {
         Category updatedCategory = categoryRepository.save(category);
 
         return modelMapper.map(updatedCategory, CategoryDto.class);
+    }
+
+    @Transactional
+    @Override
+    public int deleteCategoryById(Long categoryId) {
+        return categoryRepository.deleteCategoryById(categoryId);
     }
 }

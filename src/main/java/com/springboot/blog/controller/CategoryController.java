@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -45,5 +46,12 @@ public class CategoryController {
     public ResponseEntity<CategoryDto> updateCategory(@PathVariable("id") Long categoryId, @RequestBody CategoryDto categoryDto) {
         CategoryDto updatedCategory = categoryService.updateCategory(categoryId, categoryDto);
         return new ResponseEntity<>(updatedCategory, HttpStatus.OK);
+    }
+
+    @DeleteMapping("{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<String> deleteCategory(@PathVariable("id") Long categoryId) {
+        var rowsDeleted = categoryService.deleteCategoryById(categoryId);
+        return new ResponseEntity<>("Deleted " + rowsDeleted + " rows", HttpStatus.OK);
     }
 }
